@@ -17,6 +17,18 @@ spec:
       limits:
         memory: 1Gi
         cpu: 500m
+  - name: kubectl
+    image: registry.k8s.io/kubectl:v1.34.0
+    command: ["sleep"]
+    args: ["infinity"]
+    tty: true
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits:
+        memory: 256Mi
+        cpu: 250m
 """
     }
   }
@@ -35,9 +47,11 @@ spec:
     }
     stage('Deploy') {
       steps {
-        sh 'kubectl apply -f k8s/deployment.yaml -n demo-app'
-        sh 'kubectl rollout status deployment/hello -n demo-app --timeout=120s'
-        sh 'kubectl get pods,svc -n demo-app'
+        container('kubectl') {
+          sh 'kubectl apply -f k8s/deployment.yaml -n demo-app'
+          sh 'kubectl rollout status deployment/hello -n demo-app --timeout=120s'
+          sh 'kubectl get pods,svc -n demo-app'
+        }
       }
     }
   }
