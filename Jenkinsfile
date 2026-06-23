@@ -18,7 +18,7 @@ spec:
         memory: 1Gi
         cpu: 500m
   - name: kubectl
-    image: registry.k8s.io/kubectl:v1.34.0
+    image: docker.io/bitnami/kubectl:1.34
     command: ["sleep"]
     args: ["infinity"]
     tty: true
