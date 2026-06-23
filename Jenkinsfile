@@ -33,5 +33,12 @@ spec:
         sh 'ls -la'
       }
     }
+    stage('Deploy') {
+      steps {
+        sh 'kubectl apply -f k8s/deployment.yaml -n demo-app'
+        sh 'kubectl rollout status deployment/hello -n demo-app --timeout=120s'
+        sh 'kubectl get pods,svc -n demo-app'
+      }
+    }
   }
 }
