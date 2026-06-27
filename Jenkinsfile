@@ -41,8 +41,11 @@ spec:
     }
     stage('Build') {
       steps {
+        readCache name: 'demo-cache'
         echo 'CloudBees CI demo — build successful'
+        sh 'mkdir -p .cache && date > .cache/build-stamp'
         sh 'ls -la'
+        writeCache name: 'demo-cache', includes: '.cache/**'
       }
     }
     stage('Deploy') {
